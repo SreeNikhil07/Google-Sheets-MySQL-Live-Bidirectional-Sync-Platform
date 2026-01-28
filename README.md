@@ -119,6 +119,3 @@ Safe handling of concurrent edits.
 Production-quality backend thinking.
 Clean separation of concerns.
 It is intentionally built to resemble internal infrastructure tools, not demo-only code.
-
-
-📊 Database Schema
