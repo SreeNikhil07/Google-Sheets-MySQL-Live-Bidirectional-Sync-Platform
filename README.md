@@ -40,7 +40,7 @@ MySQL Database
 (Optional MySQL Change Capture)
 
 ## 🧠 High-Level Architecture
-<img width="896" height="538" alt="{9A3C1E64-E3D6-4B5E-BBAE-27708C1DBB86}" src="https://github.com/user-attachments/assets/ab372e29-2018-4c31-a5b1-527ba656a3fd" />
+<img width="438" height="678" alt="{9E7C5E67-21AA-46B9-8E8A-26AADABFE5EA}" src="https://github.com/user-attachments/assets/7324f1ea-8c32-4250-8733-455ccd22ba89" />
 
 
 
