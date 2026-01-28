@@ -92,7 +92,7 @@ sync_table
 uuid CHAR(36) PRIMARY KEY
 source ENUM('SHEET','MYSQL')
 updated_at TIMESTAMP
-deleted BOOLEAN
+deleted BOOLEAN 
 
 📂 Project Structure
 sheet-mysql-sync/
