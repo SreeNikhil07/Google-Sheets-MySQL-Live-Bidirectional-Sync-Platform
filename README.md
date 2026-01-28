@@ -1,121 +1,165 @@
-📌 Project Title  Google-Sheets-MySQL-Live-Bidirectional-Sync-Platform
-🚀 This project implements a production-grade, real-time, bidirectional data synchronization system between Google Sheets and a MySQL database.
+# 📌 Google-Sheets-MySQL-Live-Bidirectional-Sync-Platform
 
-Any change made in Google Sheets or MySQL is propagated to the other system with:
-Conflict resolution
-Idempotent writes
-Schema flexibility
-Multiplayer-safe handling
-The system is designed as a stateless sync engine, making it suitable for scaling to large datasets and concurrent users.
+A **production-grade, real-time, bidirectional data synchronization platform** between **Google Sheets** and **MySQL**, designed with scalability, concurrency safety, and conflict resolution at its core.
 
-🎯 Problem Statement
+This is **not a toy project** — it mirrors how internal sync engines are built in real-world systems.
+
+---
+
+## 🚀 Key Features
+
+- 🔄 **Live 2-way synchronization** between Google Sheets and MySQL  
+- 🧠 **Centralized conflict resolution** via FastAPI  
+- ⏱️ **Timestamp-based Last-Write-Wins (LWW)** strategy  
+- ♻️ **Idempotent writes** (safe retries & duplicate events)  
+- 👥 **Multiplayer-safe** (handles concurrent edits gracefully)  
+- 🧩 **Schema-flexible** (works for any table structure)  
+- ⚙️ **Stateless sync engine** → horizontally scalable  
+- 🧪 **Real-time internal dashboard** for testing & observability  
+
+---
+
+## 🎯 Problem Statement
+
 Build a system that:
-Maintains live 2-way sync between Google Sheets and MySQL
-Works for any table structure
-Handles concurrent edits
-Is production-ready, not a toy project
-Provides a simple interface to test behavior in real time
 
-🧠 Architecture of the project : 
+- Maintains **live bidirectional sync** between Google Sheets and MySQL  
+- Works for **any table structure**  
+- Handles **concurrent updates** without corruption  
+- Is **production-ready**, not demo-only  
+- Provides a **simple interface** to observe and test sync behavior  
+
+---
+
 Google Sheets (Apps Script Trigger)
-        ↓
+↓
 FastAPI Sync Engine
-        ↓
+↓
 MySQL Database
-        ↑
+↑
 (Optional MySQL Change Capture)
 
-Key Principles : 
-FastAPI acts as the single conflict-resolution authority
-All writes are idempotent
-Sync logic is timestamp-based
-UI is stateless and used only for simulation and observability
 
-🏗️ Tech Stack
-Layer	                                  Technology
-Backend                             API	FastAPI (Python)
-Database                                 	MySQL
-ORM	                                   SQLAlchemy
-Sheet Integration               	Google Apps Script
-UI	                      HTML + CSS + JS (single-file dashboard)
-Conflict Handling	           Timestamp-based (Last-write-wins)
+### 🔑 Design Principles
 
+- **FastAPI is the single source of truth**
+- All writes are **idempotent**
+- **Timestamp-based conflict resolution**
+- UI is **stateless**, used only for simulation & observability
 
-🔄 Sync Strategy : 
-Row Identity
-Every row is identified by a UUID
-Same UUID = same logical record across systems
-Conflict Resolution
-Each update carries an updated_at timestamp
-Newer timestamp wins
-Older updates are safely ignored
-Idempotency
-Duplicate events do not corrupt data
-Replayed events are safe.
+---
 
-📂Project Structure:
-sheet-mysql-sync/
-│
-├── app/
-│   ├── main.py            # FastAPI entrypoint
-│   ├── database.py        # DB connection
-│   ├── models.py          # Sync state model
-│   ├── sync_engine.py     # Conflict resolution logic
-│   ├── ui.py              # Live dashboard UI
-│   ├── sheet_client.py    # (Extensible)
-│   └── mysql_listener.py  # (Extensible)
-│
-├── test_db.py
-├── requirements.txt
-└── README.md
+## 🏗️ Tech Stack
 
-🧪 Live Testing Interface : 
-The system includes a professional internal dashboard that allows:
-Manual mutation of UUID, name, email, and timestamps
-Real-time sync simulation
-Payload inspection
-System action visibility
-This UI is intentionally lightweight and stateless, mimicking internal tooling used by engineering teams.
+| Layer | Technology |
+|-----|-----------|
+| Backend API | FastAPI (Python) |
+| Database | MySQL |
+| ORM | SQLAlchemy |
+| Sheets Integration | Google Apps Script |
+| UI Dashboard | HTML + CSS + JavaScript (single-file) |
+| Conflict Handling | Timestamp-based (Last-Write-Wins) |
 
-⚙️How to Run Locally
-1. Setup Virtual Environment
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\Activate.ps1
+---
 
-2.Install Dependencies
-pip install -r requirements.txt
+## 🔄 Sync Strategy
 
-3.Start Server
-uvicorn app.main:app --reload
+### 🔐 Row Identity
+- Every row is identified using a **UUID**
+- Same UUID = same logical record across all systems
 
-4.Open Dashboard
-http://127.0.0.1:8000/
+### ⚔️ Conflict Resolution
+- Each update carries an `updated_at` timestamp
+- **Newer timestamp wins**
+- Older updates are ignored safely
 
+### ♻️ Idempotency
+- Duplicate or replayed events do **not corrupt data**
+- Safe for retries and event reprocessing
 
-📊 Database Schema
-users
+---
+
+## 📊 Database Schema
+
+### `users` table
+```sql
 uuid CHAR(36) PRIMARY KEY
 name VARCHAR(255)
 email VARCHAR(255)
 updated_at TIMESTAMP
 
-sync_state
+sync_table
 uuid CHAR(36) PRIMARY KEY
 source ENUM('SHEET','MYSQL')
 updated_at TIMESTAMP
 deleted BOOLEAN
 
-🔐 Production Considerations :
-Stateless API enables horizontal scaling
-Can integrate Kafka / PubSub for large-scale event streaming
-Conflict resolution logic isolated for extensibility
-Safe for concurrent Google Sheet editors.
+📂 Project Structure
+sheet-mysql-sync/
+│
+├── app/
+│   ├── main.py            # FastAPI entrypoint
+│   ├── database.py        # DB connection
+│   ├── models.py          # ORM models
+│   ├── sync_engine.py     # Conflict resolution logic
+│   ├── ui.py              # Internal live dashboard
+│   ├── sheet_client.py    # (Extensible) Google Sheets client
+│   └── mysql_listener.py  # (Extensible) MySQL change capture
+│
+├── test_db.py
+├── requirements.txt
+└── README.md
+
+🧪 Live Testing Dashboard
+
+A professional internal dashboard is included to simulate real-world sync behavior.
+
+Capabilities:
+
+Manual mutation of:
+
+UUID
+
+name
+
+email
+
+timestamps
+
+Real-time sync simulation
+
+Payload inspection
+
+Visibility into system decisions
+
+This UI intentionally mimics internal engineering tooling, not a user-facing app
+⚙️ How to Run Locally
+1. Setup Virtual Environment
+python -m venv venv
+source venv/bin/activate   # Windows: venv\Scripts\Activate.ps1
+
+2. Install Dependencies
+pip install -r requirements.txt
+
+3. Start Server
+uvicorn app.main:app --reload
+
+4. Open Dashboard
+http://127.0.0.1:8000/
+
+🔐 Production Considerations
+-Stateless API enables horizontal scaling.
+-Kafka / PubSub can be added for large-scale event streaming.
+-Conflict resolution logic isolated for extensibility.
+-Safe for concurrent Google Sheets editors.
 
 🏁 Conclusion
 
 This project demonstrates:
-Real-world sync engine design.
-Safe handling of concurrent edits.
-Production-quality backend thinking.
-Clean separation of concerns.
-It is intentionally built to resemble internal infrastructure tools, not demo-only code.
+-Real-world sync engine design.
+-Safe handling of concurrent edits.
+-Production-quality backend architecture.
+-Clean separation of concerns.
+-Built to resemble internal infrastructure tools, not demo-only code.
+## 🧠 High-Level Architecture
+
