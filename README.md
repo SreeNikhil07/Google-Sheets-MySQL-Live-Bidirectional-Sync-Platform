@@ -82,7 +82,7 @@ MySQL Database
 ## 📊 Database Schema
 
 ### `users` table
-```sql
+sql
 uuid CHAR(36) PRIMARY KEY
 name VARCHAR(255)
 email VARCHAR(255)
