@@ -39,6 +39,10 @@ MySQL Database
 ↑
 (Optional MySQL Change Capture)
 
+## 🧠 High-Level Architecture
+<img width="896" height="538" alt="{9A3C1E64-E3D6-4B5E-BBAE-27708C1DBB86}" src="https://github.com/user-attachments/assets/ab372e29-2018-4c31-a5b1-527ba656a3fd" />
+
+
 
 ### 🔑 Design Principles
 
@@ -161,5 +165,5 @@ This project demonstrates:
 -Production-quality backend architecture.
 -Clean separation of concerns.
 -Built to resemble internal infrastructure tools, not demo-only code.
-## 🧠 High-Level Architecture
+
 
